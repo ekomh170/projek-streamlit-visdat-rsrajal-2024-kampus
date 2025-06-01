@@ -1,0 +1,31 @@
+# Ignore Python cache and virtual environment
+__pycache__/
+.venv/
+
+# Ignore credentials and sensitive data
+/json/
+!json/templating-credentials.json
+
+# Ignore local data files
+/data/
+!data/README.md
+
+# Ignore Excel and other data exports
+*.xlsx
+*.csv
+
+# Ignore Streamlit config (optional, kecuali ingin share theme)
+.streamlit/
+!/.streamlit/config_template.toml
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore documentation folder
+/docs/
+
+# Template files to upload to git (rename as needed):
+# - json/templating-credentials.json (contoh struktur credentials, tanpa data asli)
+# - data/README.md (penjelasan struktur data, tanpa data asli)
+# - .streamlit/config_template.toml (template theme)
