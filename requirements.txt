@@ -1,0 +1,12 @@
+# requirements.txt
+# Daftar pustaka Python
+# Cara instalasi: jalankan perintah di bawah ini di terminal
+# pip install -r requirements.txt
+
+streamlit
+pandas
+matplotlib
+seaborn
+gspread
+oauth2client
+openpyxl
