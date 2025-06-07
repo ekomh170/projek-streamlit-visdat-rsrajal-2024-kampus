@@ -1,7 +1,8 @@
 import streamlit as st
 from src.visualisasi.bar_chart import render_bar_chart
-# Import visualisasi lain jika sudah ada (pie_chart, line_graph, heatmap, scatter_plot)
-
+from src.visualisasi.pie_chart import render_pie_chart
+from src.visualisasi.line_graph import render_line_graph
+# Import visualisasi lain jika sudah ada (heatmap, scatter_plot)
 
 def render_visualisasi_menu():
     """
@@ -75,9 +76,9 @@ def render_visualisasi_menu():
     if menu == "Bar Chart Kunjungan per Dokter Spesialis":
         render_bar_chart()
     elif menu == "Pie Chart Proporsi Pasien":
-        st.info("Fitur Pie Chart akan dikembangkan.")
+        render_pie_chart()
     elif menu == "Line Graph Tren Kunjungan Harian":
-        st.info("Fitur Line Graph akan dikembangkan.")
+        render_line_graph()
     elif menu == "Heatmap Distribusi Hari & Poli":
         st.info("Fitur Heatmap akan dikembangkan.")
     elif menu == "Scatter Plot Usia vs Poli":

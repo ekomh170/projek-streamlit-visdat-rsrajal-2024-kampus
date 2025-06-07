@@ -4,7 +4,8 @@ from src.layouting.footer import render_footer
 from src.layouting.sidebar import render_sidebar
 from src.visualisasi.daftar_tabel import render_tabel_kunjungan
 from src.visualisasi.bar_chart import render_bar_chart
-from src.presenter import render_visualisasi_menu
+from src.visualisasi_menu import render_visualisasi_menu
+from src.tentang import render_tentang
 
 st.set_page_config(
     page_title="Dashboard Kunjungan Rawat Jalan RS Juliana",
@@ -46,6 +47,8 @@ elif selected_menu == "Pembersihan Data":
     st.info("Fitur pembersihan data akan dikembangkan.")
 elif selected_menu == "Visualisasi":
     render_visualisasi_menu()
+elif selected_menu == "Tentang":
+    render_tentang()
 else:
     st.write("Aplikasi dashboard visualisasi data RS Juliana. Dibangun dengan Streamlit.")
 
