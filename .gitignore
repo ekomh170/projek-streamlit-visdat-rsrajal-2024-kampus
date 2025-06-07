@@ -14,10 +14,6 @@ __pycache__/
 *.xlsx
 *.csv
 
-# Ignore Streamlit config (optional, kecuali ingin share theme)
-.streamlit/
-!/.streamlit/config_template.toml
-
 # Ignore OS files
 .DS_Store
 Thumbs.db
