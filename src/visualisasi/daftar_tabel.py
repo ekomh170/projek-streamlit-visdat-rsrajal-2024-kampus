@@ -192,12 +192,10 @@ def render_tabel_kunjungan():
     if df is not None:
         show_paginated_table(df, page_size=50, max_rows=1000)
 
-        # Tombol export dari data online ke Excel lokal
+        # Tombol export dari data online ke Excel lokal, langsung di bawah tabel
         if st.button("💾 Export Data Online ke Excel Offline", help="Ekspor seluruh data online ke file Excel lokal"):
             try:
-                df_export = df.copy()
-                os.makedirs("data/original", exist_ok=True)
-                df_export.to_excel("data/original/data_kunjungan_januari.xlsx", index=False)
+                df.to_excel("data/original/data_kunjungan_januari.xlsx", index=False)
                 st.success("Data online berhasil diekspor ke 'data/original/data_kunjungan_januari.xlsx'.")
             except Exception as e:
                 st.error(f"Gagal mengekspor data: {e}")
