@@ -127,7 +127,7 @@ def render_tabel_kunjungan():
     """
     Fungsi utama buat nampilin tabel kunjungan di dashboard.
     """
-    st.subheader("Tabel Data Mentah (dengan Pagination, max 6000 data)")
+    st.title("Tabel Data Mentah (dengan Pagination, max 6000 data)")
     col1, col2 = st.columns(2)
     refresh_clicked = col1.button("🔄 Refresh Data dari Google Sheets", help="Klik untuk ambil data terbaru dan reset cache")
     offline_clicked = col2.button("Gunakan Data Offline (Excel Lokal)", help="Ambil data dari file lokal dan update cache")
