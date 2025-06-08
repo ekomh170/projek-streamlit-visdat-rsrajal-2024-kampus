@@ -47,12 +47,13 @@ def render_pie_chart():
         st.warning("Data tidak tersedia atau kolom penting tidak ditemukan.")
         return
     # Pilihan proporsi: Jenis Kelamin atau Penjamin
-    opsi = st.radio(
+    st.markdown("<div style='margin-top:3rem;'></div>", unsafe_allow_html=True)
+    opsi = st.selectbox(
         "Tampilkan proporsi berdasarkan:",
         ["Jenis Kelamin", "Penjamin"],
-        key="piechart_opsi",
-        horizontal=True,
-        label_visibility="collapsed"
+        key="piechart_opsi_selectbox",
+        index=0,
+        help="Pilih kategori proporsi yang ingin ditampilkan"
     )
     st.markdown("<div style='margin-bottom:1.2rem;'></div>", unsafe_allow_html=True)
     # Hitung data sesuai opsi
@@ -92,7 +93,7 @@ def render_pie_chart():
     # Render legend title dengan bold menggunakan HTML
     ax.legend(wedges, legend_labels, title=None, loc="center left", bbox_to_anchor=(1, 0.5), fontsize=12)
     # Tambahkan judul legend bold di atas chart dengan HTML (karena Matplotlib legend tidak support HTML, gunakan Streamlit)
-    st.markdown(f"<div style='margin-bottom:-1.2rem;margin-top:0.5rem;'><b>{'Penjamin' if opsi=='Penjamin' else 'Jenis Kelamin'}</b></div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='margin-bottom:-1.2rem;'><b>{'Penjamin' if opsi=='Penjamin' else 'Jenis Kelamin'}</b></div>", unsafe_allow_html=True)
     ax.set_title(title, fontsize=15, color="#228B22", fontweight="bold", pad=16)
     ax.axis('equal')  # Pie chart proporsional
     st.pyplot(fig)
