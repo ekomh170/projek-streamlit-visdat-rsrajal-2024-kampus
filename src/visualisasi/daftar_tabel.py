@@ -83,10 +83,10 @@ def get_cached_data():
             pass  # Jika gagal simpan cache, tetap lanjutkan
     return df
 
-def show_paginated_table(df, page_size=50, max_rows=1000):
+def show_paginated_table(df, page_size=50, max_rows=None):
     """
     Tampilkan tabel data dengan fitur pagination (bisa ganti halaman).
-    Maksimal 1000 data yang ditampilkan.
+    Jika max_rows=None, tampilkan seluruh data.
     Hanya menampilkan kolom yang sudah disetujui user (tanpa kolom sensitif) dan urutan sesuai permintaan user.
     """
     # Normalisasi nama kolom agar cocok dengan DISPLAY_COLUMNS
@@ -99,7 +99,10 @@ def show_paginated_table(df, page_size=50, max_rows=1000):
                 if c.lower().replace(' ', '') == col.lower().replace(' ', ''):
                     col_map[c] = col
     df = df.rename(columns=col_map)
-    df_display = df.head(max_rows).copy()
+    if max_rows is not None:
+        df_display = df.head(max_rows).copy()
+    else:
+        df_display = df.copy()
     for col in DISPLAY_COLUMNS:
         if col not in df_display.columns:
             df_display[col] = ""
@@ -117,14 +120,14 @@ def show_paginated_table(df, page_size=50, max_rows=1000):
     end = start + page_size
     page_df = df_display.iloc[start:end].copy()
     page_df.insert(0, "No", range(start + 1, min(end, total_rows) + 1))
-    st.write(f"Menampilkan baris {start+1} - {min(end, total_rows)} dari {total_rows} (hanya {max_rows} data pertama)")
+    st.write(f"Menampilkan baris {start+1} - {min(end, total_rows)} dari {total_rows}")
     st.dataframe(page_df)
 
 def render_tabel_kunjungan():
     """
     Fungsi utama buat nampilin tabel kunjungan di dashboard.
     """
-    st.subheader("Tabel Data Mentah (dengan Pagination, max 1000 data)")
+    st.subheader("Tabel Data Mentah (dengan Pagination, max 6000 data)")
     col1, col2 = st.columns(2)
     refresh_clicked = col1.button("🔄 Refresh Data dari Google Sheets", help="Klik untuk ambil data terbaru dan reset cache")
     offline_clicked = col2.button("Gunakan Data Offline (Excel Lokal)", help="Ambil data dari file lokal dan update cache")
@@ -157,7 +160,7 @@ def render_tabel_kunjungan():
             df = df.rename(columns=col_map)
             # Pagination logic
             page_size = 50
-            max_rows = 1000
+            max_rows = 6000
             df_display = df.head(max_rows).copy()
             for col in DISPLAY_COLUMNS:
                 if col not in df_display.columns:
@@ -180,7 +183,7 @@ def render_tabel_kunjungan():
                     st.success("Data halaman ini berhasil diekspor dan menimpa file offline. Silakan refresh data offline.")
                 except Exception as e:
                     st.error(f"Gagal export data ke Excel offline: {e}")
-            st.info("Menampilkan maksimal 1000 data pertama untuk performa. Silakan lanjutkan ke fitur pembersihan data dan visualisasi.")
+            st.info("Menampilkan maksimal 6000 data pertama untuk performa. Silakan lanjutkan ke fitur pembersihan data dan visualisasi.")
             return
         except Exception as e:
             st.error(f"Gagal mengambil data offline: {e}")
@@ -190,7 +193,7 @@ def render_tabel_kunjungan():
         df = get_cached_data()
 
     if df is not None:
-        show_paginated_table(df, page_size=50, max_rows=1000)
+        show_paginated_table(df, page_size=50, max_rows=None)
 
         # Tombol export dari data online ke Excel lokal, langsung di bawah tabel
         if st.button("💾 Export Data Online ke Excel Offline", help="Ekspor seluruh data online ke file Excel lokal"):
@@ -200,6 +203,6 @@ def render_tabel_kunjungan():
             except Exception as e:
                 st.error(f"Gagal mengekspor data: {e}")
 
-        st.info("Menampilkan maksimal 1000 data pertama untuk performa. Silakan lanjutkan ke fitur pembersihan data dan visualisasi.")
+        st.info("Menampilkan seluruh data (hingga 6000 baris) untuk performa. Silakan lanjutkan ke fitur pembersihan data dan visualisasi.")
     else:
         st.warning("Data tidak tersedia. Pastikan koneksi dan kredensial sudah benar.")

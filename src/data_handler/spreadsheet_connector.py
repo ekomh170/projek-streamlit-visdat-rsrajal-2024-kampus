@@ -37,7 +37,7 @@ def load_sheet_data(sheet_url, worksheet_name, creds_path='credentials.json'):
     data = worksheet.get_all_values()
     # Ambil header dari baris ke-14 (indeks 13)
     header = data[13]
-    rows = data[14:14+1000]  # Ambil maksimal 1000 data setelah header
+    rows = data[14:]  # Ambil semua data setelah header
     df = pd.DataFrame(rows, columns=header)
     # Anonimkan Nama Pasien
     def shorten_name(name):
