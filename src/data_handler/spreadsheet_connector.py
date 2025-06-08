@@ -56,6 +56,25 @@ def load_sheet_data(sheet_url, worksheet_name, creds_path='credentials.json'):
     df = df.dropna(how='all')
     return df
 
+# Fungsi untuk cek koneksi Google Spreadsheet (gspread)
+def cek_koneksi_gspread(creds_path='credentials.json'):
+    """
+    Mengecek koneksi ke Google Spreadsheet menggunakan gspread dan service account.
+    Mengembalikan status koneksi (True/False) dan pesan.
+    """
+    scope = [
+        'https://spreadsheets.google.com/feeds',
+        'https://www.googleapis.com/auth/drive'
+    ]
+    try:
+        creds = ServiceAccountCredentials.from_json_keyfile_name(creds_path, scope)
+        client = gspread.authorize(creds)
+        # Test: ambil daftar spreadsheet (atau spreadsheet dummy)
+        _ = client.openall()
+        return True, "Koneksi ke Google Spreadsheet berhasil!"
+    except Exception as e:
+        return False, f"Gagal koneksi ke Google Spreadsheet: {e}"
+
 # Contoh penggunaan fungsi koneksi Google Spreadsheet
 if __name__ == "__main__":
     sheet_url = "https://docs.google.com/spreadsheets/d/1Uqg-6Zp64VCv9_1b4soV9KSkRL0WkMjbcxmXWnVxpYA/edit?usp=sharing"
