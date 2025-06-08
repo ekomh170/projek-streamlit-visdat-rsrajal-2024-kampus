@@ -11,6 +11,11 @@ def render_scatter_plot():
     Tujuan: Mengidentifikasi pola distribusi usia pasien pada masing-masing poliklinik, misal dominasi pasien anak di poli anak, lansia di poli penyakit dalam, dsb.
     """
     st.subheader("Visualisasi: Scatter Plot Usia Pasien vs Poli")
+    st.markdown("""
+    <div style='background:#f1f8e9;padding:0.8rem 1.2rem 0.8rem 1.2rem;border-radius:10px;margin-bottom:1.2rem;border:1px solid #c5e1a5;'>
+        Scatter plot ini menampilkan sebaran usia pasien rawat jalan RS Juliana pada masing-masing poliklinik.
+    </div>
+    """, unsafe_allow_html=True)
     df = get_cached_data()
     if df is None or df.empty:
         st.warning("Data tidak tersedia atau kolom penting tidak ditemukan.")
@@ -88,19 +93,19 @@ def render_scatter_plot():
     st.caption('Tabel di atas menampilkan contoh data hasil parsing usia, poliklinik, dan nama pasien (maksimal 20 baris pertama). Data sudah siap untuk analisis dan visualisasi.')
     # Penjelasan insight scatter plot
     st.markdown("""
-    <div style='background:#e3f2fd;padding:1rem 1.2rem 1rem 1.2rem;border-radius:10px;margin-top:1.2rem;margin-bottom:0.5rem;border:1px solid #90caf9;'>
-        <b>Insight Scatter Plot:</b><br>
-        Scatter plot di atas memperlihatkan hubungan antara usia pasien dengan poliklinik yang dikunjungi.<br>
-        <ul style='margin-bottom:0;'>
-            <li>Setiap titik mewakili satu pasien, posisi vertikal menunjukkan usia, posisi horizontal menunjukkan poli.</li>
-            <li>Pola sebaran dapat mengungkap dominasi kelompok usia tertentu pada poli tertentu (misal: anak-anak di poli anak, lansia di penyakit dalam).</li>
-            <li>Insight ini membantu manajemen memahami profil demografis pasien tiap poli untuk perencanaan layanan yang lebih tepat.</li>
+    <div style='background:#f1f8e9;padding:0.8rem 1.2rem 0.8rem 1.2rem;border-radius:10px;margin-top:1.2rem;margin-bottom:0.5rem;border:1px solid #c5e1a5;'>
+        <b>Penjelasan:</b><br>
+        <ul style='margin-bottom:0.2rem;'>
+            <li>Setiap titik pada grafik mewakili satu pasien, posisi vertikal menunjukkan usia (tahun desimal), posisi horizontal menunjukkan poliklinik.</li>
+            <li>Scatter plot memudahkan identifikasi dominasi kelompok usia tertentu pada poli tertentu (misal: anak-anak di poli anak, lansia di penyakit dalam).</li>
+            <li>Insight ini membantu manajemen memahami profil demografis pasien tiap poli untuk perencanaan layanan dan strategi rumah sakit.</li>
         </ul>
+        Gunakan scatter plot ini untuk mendukung analisis demografi dan perencanaan layanan berbasis data.
     </div>
     """, unsafe_allow_html=True)
     # Penjelasan singkat scatter plot dan flow data
     st.markdown("""
-    <div style='background:#e3f2fd;padding:0.8rem 1rem 0.8rem 1rem;border-radius:10px;margin-top:1rem;margin-bottom:0.5rem;border:1px solid #90caf9;'>
+    <div style='background:#f1f8e9;padding:0.8rem 1rem 0.8rem 1rem;border-radius:10px;margin-top:1rem;margin-bottom:0.5rem;border:1px solid #c5e1a5;'>
     <b>Cara Kerja Scatter Plot Usia vs Poli:</b><br>
     <ol style='margin-bottom:0;'>
         <li><b>Data mentah</b> diambil dari Google Spreadsheet atau Excel, lalu diproses (cleaning dan normalisasi kolom).</li>

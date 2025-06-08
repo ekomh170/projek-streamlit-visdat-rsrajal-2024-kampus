@@ -44,8 +44,8 @@ def render_line_graph():
     """
     st.subheader("Visualisasi: Tren Kunjungan Harian (Line Graph)")
     st.markdown("""
-    <div style='color:#228B22;font-size:1.05rem;margin-bottom:0.5rem;'>
-        Grafik ini menampilkan jumlah kunjungan pasien rawat jalan per hari. Gunakan filter di bawah untuk memilih rentang tanggal di bulan Januari 2024.
+    <div style='background:#f1f8e9;padding:0.9rem 1.2rem 0.9rem 1.2rem;border-radius:10px;margin-bottom:1.2rem;border:1px solid #c5e1a5;'>
+        Grafik ini menampilkan distribusi jumlah kunjungan pasien rawat jalan RS Juliana berdasarkan <b>tanggal di bulan Januari 2024</b>.
     </div>
     """, unsafe_allow_html=True)
     df = get_linegraph_data()  # Ambil dan normalisasi data
@@ -90,3 +90,15 @@ def render_line_graph():
     plt.xticks(data_harian['Hari'])
     plt.tight_layout()
     st.pyplot(fig)
+    # Setelah grafik tampil, tambahkan penjelasan detail di bawah
+    st.markdown("""
+    <div style='background:#f1f8e9;padding:0.9rem 1.2rem 0.9rem 1.2rem;border-radius:10px;margin-top:1.2rem;margin-bottom:0.5rem;border:1px solid #c5e1a5;'>
+        <b>Penjelasan:</b><br>
+        <ul style='margin-bottom:0.2rem;'>
+            <li>Setiap titik pada grafik merepresentasikan total kunjungan pada tanggal tertentu.</li>
+            <li>Garis tren memudahkan identifikasi hari-hari sibuk dan pola fluktuasi kunjungan harian.</li>
+            <li>Insight ini membantu manajemen dalam perencanaan operasional, penjadwalan dokter, dan optimalisasi layanan.</li>
+        </ul>
+        Gunakan grafik ini untuk mendukung pengambilan keputusan berbasis data di RS Juliana.
+    </div>
+    """, unsafe_allow_html=True)

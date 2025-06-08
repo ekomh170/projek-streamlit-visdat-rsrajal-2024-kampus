@@ -50,7 +50,12 @@ def render_bar_chart(df=None):
     Komponen visualisasi bar chart interaktif di dashboard.
     Menampilkan bar chart kunjungan per dokter spesialis dengan filter.
     """
-    st.subheader("Visualisasi: Bar Chart Kunjungan per Dokter Spesialis")
+    st.subheader("Visualisasi: Bar Chart Kunjungan per Dokter Spesialis  (Januari 2024)")
+    st.markdown("""
+    <div style='background:#f1f8e9;padding:0.7rem 1rem 0.7rem 1rem;border-radius:8px;margin-bottom:1rem;border:1px solid #c5e1a5;'>
+        Bar chart ini menampilkan jumlah kunjungan pasien ke masing-masing dokter spesialis di RS Juliana. Gunakan filter di bawah untuk memilih poliklinik dan rentang usia pasien.
+    </div>
+    """, unsafe_allow_html=True)
     if df is None:
         df = get_barchart_data()
     if df is None or df.empty:
@@ -64,6 +69,14 @@ def render_bar_chart(df=None):
     usia_range = st.slider("Filter Usia (opsional):", usia_min, usia_max, (usia_min, usia_max), key="barchart_usia")
     # Chart di bawah filter
     plot_kunjungan_per_dokter(df, filter_poli=selected_poli, filter_usia=usia_range)
+
+    # Setelah chart/bar chart tampil, tambahkan penjelasan detail di bawah
+    st.markdown("""
+    <div style='background:#f1f8e9;padding:0.7rem 1rem 0.7rem 1rem;border-radius:8px;margin-top:1.2rem;margin-bottom:0.5rem;border:1px solid #c5e1a5;'>
+        <b>Penjelasan:</b><br>
+        Grafik ini membantu manajemen memantau distribusi beban kerja dokter dan tren kunjungan pasien per poli. Setiap bar mewakili total kunjungan ke satu dokter spesialis dalam periode data. Anda dapat melakukan analisis lebih spesifik dengan memanfaatkan filter poli dan usia di atas grafik.
+    </div>
+    """, unsafe_allow_html=True)
 
 # Fungsi utama untuk visualisasi bar chart kunjungan per dokter spesialis
 def plot_kunjungan_per_dokter(df, filter_poli=None, filter_usia=None, st_container=None):

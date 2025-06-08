@@ -13,7 +13,6 @@ def render_tentang():
     <b>Fitur utama:</b>
     <ul>
       <li>Visualisasi interaktif (bar chart, pie chart, line graph, heatmap, scatter plot)</li>
-      <li>Filter dinamis berdasarkan poli, dokter, usia, penjamin, dan lainnya</li>
     </ul>
     <b>Tim Pengembang:</b><br>
     <ul>
@@ -28,8 +27,7 @@ def render_tentang():
     </ul>
     <b>Kontak:</b><br>
     <ul>
-      <li>Email : </li>
-      <li>Website : </li>
+      <li>Website : <a href="https://rsjuliana.co.id" target="_blank">https://rsjuliana.co.id</a></li>
     </ul>
     </p>
     </div>

@@ -34,12 +34,10 @@ def render_pie_chart():
     Menampilkan proporsi pasien berdasarkan jenis kelamin atau penjamin.
     Tampilan responsif dan proporsional.
     """
+    st.subheader("Visualisasi: Pie Chart Proporsi Pasien (Januari 2024)")
     st.markdown("""
-    <div style='background:#DFF0D8;padding:1.2rem 1.5rem 1rem 1.5rem;border-radius:14px;max-width:700px;margin:auto;box-shadow:0 2px 12px rgba(34,139,34,0.10);border:1px solid #e0e0e0;'>
-        <h3 style='color:#228B22;font-family:Roboto,sans-serif;font-weight:700;margin-bottom:0.5rem;'>Visualisasi: Pie Chart Proporsi Pasien</h3>
-        <div style='color:#444;font-size:1.08rem;font-family:Roboto,sans-serif;'>
-            Lihat proporsi pasien berdasarkan <b>jenis kelamin</b> atau <b>penjamin</b> dengan tampilan modern dan responsif.
-        </div>
+    <div style='background:#f1f8e9;padding:0.9rem 1.2rem 0.9rem 1.2rem;border-radius:10px;border:1px solid #c5e1a5;'>
+        Pie chart ini menampilkan proporsi pasien rawat jalan RS Juliana berdasarkan <b>jenis kelamin</b> atau <b>penjamin</b> selama Januari 2024. Pilih kategori proporsi untuk melihat distribusi data secara visual.
     </div>
     """, unsafe_allow_html=True)
     df = get_piechart_data()
@@ -47,7 +45,7 @@ def render_pie_chart():
         st.warning("Data tidak tersedia atau kolom penting tidak ditemukan.")
         return
     # Pilihan proporsi: Jenis Kelamin atau Penjamin
-    st.markdown("<div style='margin-top:3rem;'></div>", unsafe_allow_html=True)
+    st.markdown("<div></div>", unsafe_allow_html=True)
     opsi = st.selectbox(
         "Tampilkan proporsi berdasarkan:",
         ["Jenis Kelamin", "Penjamin"],
@@ -97,3 +95,16 @@ def render_pie_chart():
     ax.set_title(title, fontsize=15, color="#228B22", fontweight="bold", pad=16)
     ax.axis('equal')  # Pie chart proporsional
     st.pyplot(fig)
+    # Hapus deskripsi singkat duplikat di bawah diagram
+    # Setelah pie chart tampil, tambahkan penjelasan detail di bawah
+    st.markdown("""
+    <div style='background:#DFF0D8;padding:0.8rem 1.2rem 0.8rem 1.2rem;border-radius:10px;margin-top:1.2rem;margin-bottom:0.5rem;border:1px solid #b2dfdb;'>
+        <b>Penjelasan:</b><br>
+        <ul style='margin-bottom:0.2rem;'>
+            <li>Setiap warna pada pie chart mewakili satu kategori (jenis kelamin atau penjamin).</li>
+            <li>Persentase dan jumlah pasien ditampilkan di legend samping grafik.</li>
+            <li>Insight ini membantu manajemen memahami distribusi demografis pasien dan pola penjamin biaya secara cepat dan intuitif.</li>
+        </ul>
+        Gunakan pie chart ini untuk mendukung perencanaan layanan dan strategi rumah sakit.
+    </div>
+    """, unsafe_allow_html=True)

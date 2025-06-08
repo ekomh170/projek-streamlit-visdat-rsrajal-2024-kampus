@@ -10,6 +10,11 @@ def render_heatmap():
     Menampilkan jumlah kunjungan pada setiap kombinasi hari dan poli di bulan Januari 2024.
     """
     st.subheader("Visualisasi: Heatmap Distribusi Hari & Poli (Januari 2024)")
+    st.markdown("""
+    <div style='background:#f1f8e9;padding:0.9rem 1.2rem 0.9rem 1.2rem;border-radius:10px;margin-bottom:1.2rem;border:1px solid #c5e1a5;'>
+        Heatmap ini menampilkan distribusi jumlah kunjungan pasien rawat jalan RS Juliana berdasarkan <b>hari dalam minggu</b> (Senin-Minggu) dan <b>poliklinik</b> selama Januari 2024.
+    </div>
+    """, unsafe_allow_html=True)
     df = get_cached_data()
     if df is None or df.empty:
         st.warning("Data tidak tersedia atau kolom penting tidak ditemukan.")
@@ -44,16 +49,16 @@ def render_heatmap():
     plt.xlabel('Poli')
     plt.ylabel('Hari')
     st.pyplot(plt.gcf())
-    # Penjelasan insight heatmap
+    # Setelah heatmap tampil, tambahkan penjelasan detail di bawah
     st.markdown("""
-    <div style='background:#f1f8e9;padding:1rem 1.2rem 1rem 1.2rem;border-radius:10px;margin-top:1.2rem;margin-bottom:0.5rem;border:1px solid #c5e1a5;'>
-        <b>Insight Heatmap:</b><br>
-        Visualisasi heatmap di atas memperlihatkan intensitas kunjungan pasien ke masing-masing poli berdasarkan hari dalam minggu selama Januari 2024.<br>
-        <ul style='margin-bottom:0;'>
-            <li>Sel yang berwarna lebih gelap menandakan volume kunjungan yang lebih tinggi.</li>
-            <li>Manajemen dapat mengidentifikasi hari-hari sibuk dan poli dengan beban tertinggi untuk perencanaan jadwal dan kapasitas.</li>
-            <li>Gunakan insight ini untuk mengoptimalkan penjadwalan dokter dan pengelolaan ruangan.</li>
+    <div style='background:#f1f8e9;padding:0.9rem 1.2rem 0.9rem 1.2rem;border-radius:10px;margin-top:1.2rem;margin-bottom:0.5rem;border:1px solid #c5e1a5;'>
+        <b>Penjelasan:</b><br>
+        <ul style='margin-bottom:0.2rem;'>
+            <li>Setiap sel menunjukkan total kunjungan pada kombinasi hari dan poli tertentu.</li>
+            <li>Warna lebih gelap menandakan volume kunjungan lebih tinggi.</li>
+            <li>Insight ini membantu manajemen mengidentifikasi hari sibuk, poli dengan beban tertinggi, dan pola kunjungan mingguan untuk perencanaan jadwal dokter serta pengelolaan ruangan.</li>
         </ul>
+        Gunakan heatmap ini untuk mendukung pengambilan keputusan operasional dan optimalisasi layanan rumah sakit.
     </div>
     """, unsafe_allow_html=True)
 
