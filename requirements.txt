@@ -10,3 +10,10 @@ seaborn
 gspread
 oauth2client
 openpyxl
+
+# Tambahan untuk cache dan integrasi Google API
+pickle-mixin
+requests
+google-auth
+google-auth-oauthlib
+google-api-python-client
