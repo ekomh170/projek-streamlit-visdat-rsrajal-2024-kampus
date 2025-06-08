@@ -3,6 +3,7 @@ from src.visualisasi.bar_chart import render_bar_chart
 from src.visualisasi.pie_chart import render_pie_chart
 from src.visualisasi.line_graph import render_line_graph
 from src.visualisasi.heatmap import render_heatmap
+from src.visualisasi.scatter_plot import render_scatter_plot
 
 # sesuaikan: menu visualisasi utama, Material Design, horizontal radio, dan render visualisasi
 def render_visualisasi_menu():
@@ -89,4 +90,4 @@ def render_visualisasi_menu():
     elif menu == "Heatmap Distribusi Hari & Poli":
         render_heatmap()
     elif menu == "Scatter Plot Usia vs Poli":
-        st.info("Fitur Scatter Plot akan dikembangkan.")
+        render_scatter_plot()
