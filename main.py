@@ -1,4 +1,5 @@
 import streamlit as st
+import os  # sesuaikan: untuk path absolut favicon
 from src.layouting.header import render_header
 from src.layouting.footer import render_footer
 from src.layouting.sidebar import render_sidebar
@@ -9,7 +10,9 @@ from src.tentang import render_tentang
 
 st.set_page_config(
     page_title="Dashboard Kunjungan Rawat Jalan RS Juliana",
-    layout="wide"
+    layout="wide",
+    # sesuaikan: favicon pakai path absolut jika ada, fallback emoji jika tidak
+    page_icon=os.path.abspath("assets/img/favicon/favicon.ico") if os.path.exists("assets/img/favicon/favicon.ico") else "🏥"
 )
 
 # Embed Bootstrap CSS offline (pastikan sebelum komponen layout dipanggil)
