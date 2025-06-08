@@ -7,6 +7,7 @@ from src.visualisasi.daftar_tabel import render_tabel_kunjungan
 from src.visualisasi_menu import render_visualisasi_menu
 from src.tentang import render_tentang
 from src.pembersihan_data import render_pembersihan_data 
+from src.dashboard_intro import render_dashboard_intro
 
 st.set_page_config(
     page_title="Dashboard Kunjungan Rawat Jalan RS Juliana",
@@ -27,8 +28,8 @@ render_sidebar()
 MENU = [
     ("Dashboard Utama", "Dashboard Utama"),
     ("Tabel Data Kunjungan", "Tabel Data Kunjungan"),
+    ("Visualisasi Data", "Visualisasi Data"),
     ("Pembersihan Data", "Pembersihan Data"),
-    ("Visualisasi", "Visualisasi"),
     ("Tentang", "Tentang")
 ]
 
@@ -46,14 +47,13 @@ for label, key in MENU:
 
 # Render konten berdasarkan menu yang dipilih
 if selected_menu == "Dashboard Utama":
-    st.title("Dashboard Kunjungan Rawat Jalan RS Juliana - Januari 2024")
-    st.write("Selamat datang di dashboard. Silakan pilih menu di sidebar untuk fitur lain.")
+    render_dashboard_intro()
 elif selected_menu == "Tabel Data Kunjungan":
     render_tabel_kunjungan()
-elif selected_menu == "Pembersihan Data":
-    render_pembersihan_data()  
-elif selected_menu == "Visualisasi":
+elif selected_menu == "Visualisasi Data":
     render_visualisasi_menu()
+elif selected_menu == "Pembersihan Data":
+    render_pembersihan_data()
 elif selected_menu == "Tentang":
     render_tentang()
 else:
