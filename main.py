@@ -29,7 +29,7 @@ MENU = [
     ("Dashboard Utama", "Dashboard Utama"),
     ("Tabel Data Kunjungan", "Tabel Data Kunjungan"),
     ("Visualisasi Data", "Visualisasi Data"),
-    ("Pembersihan Data", "Pembersihan Data"),
+    ("Cek Koneksi Data", "Cek Koneksi Data"),
     ("Tentang", "Tentang")
 ]
 
@@ -52,7 +52,7 @@ elif selected_menu == "Tabel Data Kunjungan":
     render_tabel_kunjungan()
 elif selected_menu == "Visualisasi Data":
     render_visualisasi_menu()
-elif selected_menu == "Pembersihan Data":
+elif selected_menu == "Cek Koneksi Data":
     render_pembersihan_data()
 elif selected_menu == "Tentang":
     render_tentang()

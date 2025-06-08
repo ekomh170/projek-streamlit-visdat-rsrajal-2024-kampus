@@ -1,3 +1,7 @@
+# .notes_dev
+notes_dev/
+readme.md
+
 # Ignore Python cache and virtual environment
 __pycache__/
 .venv/
