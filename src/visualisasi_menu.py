@@ -2,13 +2,17 @@ import streamlit as st
 from src.visualisasi.bar_chart import render_bar_chart
 from src.visualisasi.pie_chart import render_pie_chart
 from src.visualisasi.line_graph import render_line_graph
-# Import visualisasi lain jika sudah ada (heatmap, scatter_plot)
+from src.visualisasi.heatmap import render_heatmap
 
+# sesuaikan: menu visualisasi utama, Material Design, horizontal radio, dan render visualisasi
 def render_visualisasi_menu():
     """
     Halaman utama menu visualisasi, menampilkan pilihan visualisasi dengan tampilan Material Design (ala Google).
+    # sesuaikan: menu visualisasi interaktif, horizontal radio, dan pemanggilan fungsi visualisasi
     """
+    # Judul halaman
     st.title("Visualisasi Data Kunjungan RS Juliana")
+    # Desain Material Design untuk menu visualisasi
     st.markdown("""
     <style>
     .vis-menu-box {
@@ -66,13 +70,16 @@ def render_visualisasi_menu():
             "Pie Chart Proporsi Pasien",
             "Line Graph Tren Kunjungan Harian",
             "Heatmap Distribusi Hari & Poli",
-            "Scatter Plot Usia vs Poli"
+            "Scatter Plot Usia vs Poli",
         ],
         key="visualisasi_radio",
         horizontal=True,
         label_visibility="collapsed"
     )
+    
+    # Tambahkan garis pemisah
     st.markdown("---")
+    # Panggil fungsi render sesuai pilihan menu
     if menu == "Bar Chart Kunjungan per Dokter Spesialis":
         render_bar_chart()
     elif menu == "Pie Chart Proporsi Pasien":
@@ -80,6 +87,6 @@ def render_visualisasi_menu():
     elif menu == "Line Graph Tren Kunjungan Harian":
         render_line_graph()
     elif menu == "Heatmap Distribusi Hari & Poli":
-        st.info("Fitur Heatmap akan dikembangkan.")
+        render_heatmap()
     elif menu == "Scatter Plot Usia vs Poli":
         st.info("Fitur Scatter Plot akan dikembangkan.")

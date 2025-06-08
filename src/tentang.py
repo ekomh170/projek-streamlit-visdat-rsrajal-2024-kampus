@@ -17,7 +17,8 @@ def render_tentang():
     </ul>
     <b>Tim Pengembang:</b><br>
     <ul>
-      <li>Eko Muchamad Haryono - 0110223079 - Mahasiswa</li>
+      <li>Eko Muchamad Haryono - 0110223079 - Mahasiswa (Ketua Tim)</li>
+      <li>Raka Muhammad Rabbani - 0110223050 - Mahasiswa</li>
     </ul>
     <b>Tujuan:</b><br>
     <ul>

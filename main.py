@@ -4,9 +4,9 @@ from src.layouting.header import render_header
 from src.layouting.footer import render_footer
 from src.layouting.sidebar import render_sidebar
 from src.visualisasi.daftar_tabel import render_tabel_kunjungan
-from src.visualisasi.bar_chart import render_bar_chart
 from src.visualisasi_menu import render_visualisasi_menu
 from src.tentang import render_tentang
+from src.pembersihan_data import render_pembersihan_data 
 
 st.set_page_config(
     page_title="Dashboard Kunjungan Rawat Jalan RS Juliana",
@@ -19,6 +19,7 @@ st.set_page_config(
 with open("assets/css/bootstrap.min.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
+# Render header dan sidebar
 render_header()
 render_sidebar()
 
@@ -32,22 +33,25 @@ MENU = [
 ]
 
 # Sidebar tombol navigasi
+# Pastikan session state untuk menu sudah ada
 if 'selected_menu' not in st.session_state:
     st.session_state['selected_menu'] = MENU[0][0]
 selected_menu = st.session_state['selected_menu']
 
+# Render tombol menu di sidebar
 for label, key in MENU:
     if st.sidebar.button(label, key=key, use_container_width=True):
         st.session_state['selected_menu'] = label
         selected_menu = label
 
+# Render konten berdasarkan menu yang dipilih
 if selected_menu == "Dashboard Utama":
     st.title("Dashboard Kunjungan Rawat Jalan RS Juliana - Januari 2024")
     st.write("Selamat datang di dashboard. Silakan pilih menu di sidebar untuk fitur lain.")
 elif selected_menu == "Tabel Data Kunjungan":
     render_tabel_kunjungan()
 elif selected_menu == "Pembersihan Data":
-    st.info("Fitur pembersihan data akan dikembangkan.")
+    render_pembersihan_data()  
 elif selected_menu == "Visualisasi":
     render_visualisasi_menu()
 elif selected_menu == "Tentang":
