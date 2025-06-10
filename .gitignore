@@ -1,3 +1,6 @@
+# Git ignore file for a Streamlit app project
+deploy.txt
+
 # .notes_dev
 notes_dev/
 readme.md
@@ -24,6 +27,11 @@ Thumbs.db
 
 # Ignore documentation folder
 /docs/
+
+# Ignore deployment setup and secrets templates
+/deploy/
+!deploy/README.md
+!deploy/secrets_setup_template_deploy.txt
 
 # Template files to upload to git (rename as needed):
 # - json/templating-credentials.json (contoh struktur credentials, tanpa data asli)
