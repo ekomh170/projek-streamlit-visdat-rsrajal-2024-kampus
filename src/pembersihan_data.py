@@ -13,7 +13,8 @@ def render_pembersihan_data():
     </div>
     """, unsafe_allow_html=True)
     if st.button("Cek Koneksi Google Spreadsheet"):
-        creds_path = os.path.join("json", "credentials.json")
+        creds_json = st.secrets.get("GCP_SERVICE_ACCOUNT", None)
+        creds_path = creds_json if creds_json else os.path.join("json", "credentials.json")
         try:
             status, pesan = cek_koneksi_gspread(creds_path=creds_path)
             if status:

@@ -12,8 +12,8 @@ DISPLAY_COLUMNS = [
 ]
 
 # Link Google Spreadsheet dan nama sheet yang dipakai
-SHEET_URL = "https://docs.google.com/spreadsheets/d/1Uqg-6Zp64VCv9_1b4soV9KSkRL0WkMjbcxmXWnVxpYA/edit?usp=sharing"
-WORKSHEET_NAME = "Januari"
+SHEET_URL = st.secrets["SHEET_URL"] if "SHEET_URL" in st.secrets else "https://docs.google.com/spreadsheets/d/1Uqg-6Zp64VCv9_1b4soV9KSkRL0WkMjbcxmXWnVxpYA/edit?usp=sharing"
+WORKSHEET_NAME = st.secrets["WORKSHEET_NAME"] if "WORKSHEET_NAME" in st.secrets else "Januari"
 # Lokasi file cache lokal biar loading data lebih ngebut
 CACHE_PATH = "data/processed/cache_tabel_kunjungan.pkl"
 
@@ -24,7 +24,14 @@ def load_data():
     Kalau dua-duanya gagal, kasih info error lengkap ke user.
     """
     try:
-        df = load_sheet_data(SHEET_URL, WORKSHEET_NAME, creds_path="json/credentials.json")
+        # Ambil kredensial dari secrets jika ada, jika tidak fallback ke file lokal
+        creds_path = None
+        creds_json = st.secrets.get("GCP_SERVICE_ACCOUNT", None)
+        if creds_json:
+            creds_path = creds_json
+        else:
+            creds_path = "json/credentials.json"
+        df = load_sheet_data(SHEET_URL, WORKSHEET_NAME, creds_path=creds_path)
         df = df.loc[:, ~df.columns.str.match('^Unnamed|^$')]
         # Normalisasi nama kolom agar konsisten dengan DISPLAY_COLUMNS
         df.columns = [c.strip() for c in df.columns]

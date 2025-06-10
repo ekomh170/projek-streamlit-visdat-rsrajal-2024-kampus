@@ -2,6 +2,8 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 from urllib.parse import urlparse, parse_qs
+import json
+import io
 
 # Fungsi untuk menghubungkan dan mengambil data dari Google Spreadsheet
 
@@ -21,14 +23,19 @@ def load_sheet_data(sheet_url, worksheet_name, creds_path='credentials.json'):
     Mengambil data dari Google Spreadsheet dan mengembalikan DataFrame pandas.
     sheet_url: URL share Google Spreadsheet
     worksheet_name: Nama worksheet/tab yang ingin diambil
-    creds_path: Path ke file credentials.json
+    creds_path: Path ke file credentials.json atau string JSON (dari st.secrets)
     """
     # Scope untuk Google Sheets dan Drive
     scope = [
         'https://spreadsheets.google.com/feeds',
         'https://www.googleapis.com/auth/drive'
     ]
-    creds = ServiceAccountCredentials.from_json_keyfile_name(creds_path, scope)
+    # Jika creds_path adalah string JSON (bukan path file), load dari string
+    if isinstance(creds_path, str) and creds_path.strip().startswith('{'):
+        creds_dict = json.loads(creds_path)
+        creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+    else:
+        creds = ServiceAccountCredentials.from_json_keyfile_name(creds_path, scope)
     client = gspread.authorize(creds)
     sheet_id = extract_sheet_id(sheet_url)
     spreadsheet = client.open_by_key(sheet_id)
@@ -61,13 +68,18 @@ def cek_koneksi_gspread(creds_path='credentials.json'):
     """
     Mengecek koneksi ke Google Spreadsheet menggunakan gspread dan service account.
     Mengembalikan status koneksi (True/False) dan pesan.
+    creds_path: Path ke file credentials.json atau string JSON (dari st.secrets)
     """
     scope = [
         'https://spreadsheets.google.com/feeds',
         'https://www.googleapis.com/auth/drive'
     ]
     try:
-        creds = ServiceAccountCredentials.from_json_keyfile_name(creds_path, scope)
+        if isinstance(creds_path, str) and creds_path.strip().startswith('{'):
+            creds_dict = json.loads(creds_path)
+            creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+        else:
+            creds = ServiceAccountCredentials.from_json_keyfile_name(creds_path, scope)
         client = gspread.authorize(creds)
         # Test: ambil daftar spreadsheet (atau spreadsheet dummy)
         _ = client.openall()
