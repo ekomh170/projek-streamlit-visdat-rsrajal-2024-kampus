@@ -14,8 +14,11 @@ __pycache__/
 !json/templating-credentials.json
 
 # Ignore local data files
-/data/
-!data/README.md
+data/README.md
+!data/original/
+data/original/*
+!data/original/.gitkeep
+!data/processed/*
 
 # Ignore Excel and other data exports
 *.xlsx
