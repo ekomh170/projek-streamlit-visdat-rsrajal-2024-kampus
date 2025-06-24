@@ -3,12 +3,13 @@ from src.data_handler.spreadsheet_connector import load_sheet_data
 from math import ceil
 import os
 import pickle
+import re
 
 # Kolom yang ingin ditampilkan di tabel (langsung satu konstanta saja)
 DISPLAY_COLUMNS = [
     "Tanggal Registrasi", "No. Reg", "No. RM Lama", "No. RM Baru",
     "Nama Pasien Anonim", "JK", "Umur / Tahun", "Poli", "Dokter", "Penjamin",
-    "Diagnosa Akhir", "Petugas Anonim"
+    "Petugas Anonim"
 ]
 
 # Link Google Spreadsheet dan nama sheet yang dipakai
@@ -43,6 +44,9 @@ def load_data():
                     if c.lower().replace(' ', '') == col.lower().replace(' ', ''):
                         col_map[c] = col
         df = df.rename(columns=col_map)
+        # Hapus kolom Diagnosa Akhir jika ada
+        if "Diagnosa Akhir" in df.columns:
+            df = df.drop(columns=["Diagnosa Akhir"])
         return df
     except Exception as e:
         import traceback
@@ -63,6 +67,9 @@ def load_data():
                         if c.lower().replace(' ', '') == col.lower().replace(' ', ''):
                             col_map[c] = col
             df = df.rename(columns=col_map)
+            # Hapus kolom Diagnosa Akhir jika ada
+            if "Diagnosa Akhir" in df.columns:
+                df = df.drop(columns=["Diagnosa Akhir"])
             return df
         except Exception as e2:
             tb2 = traceback.format_exc()
@@ -165,6 +172,9 @@ def render_tabel_kunjungan():
                         if c.lower().replace(' ', '') == col.lower().replace(' ', ''):
                             col_map[c] = col
             df = df.rename(columns=col_map)
+            # Hapus kolom Diagnosa Akhir jika ada
+            if "Diagnosa Akhir" in df.columns:
+                df = df.drop(columns=["Diagnosa Akhir"])
             # Pagination logic
             page_size = 50
             max_rows = 6000
