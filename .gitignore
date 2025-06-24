@@ -1,3 +1,7 @@
+# .streamlit
+.streamlit/secrets.toml
+secrets_setup.txt
+
 # Git ignore file for a Streamlit app project
 deploy.txt
 
