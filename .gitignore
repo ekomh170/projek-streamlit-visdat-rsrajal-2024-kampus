@@ -48,3 +48,6 @@ Thumbs.db
 # - json/templating-credentials.json (contoh struktur credentials, tanpa data asli)
 # - data/README.md (penjelasan struktur data, tanpa data asli)
 # - .streamlit/config_template.toml (template theme)
+
+
+cache_tabel_kunjungan.pkl
