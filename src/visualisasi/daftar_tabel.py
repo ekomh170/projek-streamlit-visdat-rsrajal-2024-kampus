@@ -102,13 +102,13 @@ def show_paginated_table(df, page_size=50, max_rows=None):
     Tampilkan tabel data dengan fitur pagination (bisa ganti halaman).
     Jika max_rows=None, tampilkan seluruh data.
     Hanya menampilkan kolom yang sudah disetujui user (tanpa kolom sensitif) dan urutan sesuai permintaan user.
+    Nama dokter otomatis diganti alias nama manusia demi privasi.
     """
     # Normalisasi nama kolom agar cocok dengan DISPLAY_COLUMNS
     df = df.rename(columns={c: c.strip() for c in df.columns})
     col_map = {c: c for c in df.columns}
     for col in DISPLAY_COLUMNS:
         if col not in df.columns:
-            # Coba cari kolom dengan lower-case match (toleransi typo minor)
             for c in df.columns:
                 if c.lower().replace(' ', '') == col.lower().replace(' ', ''):
                     col_map[c] = col
@@ -121,6 +121,36 @@ def show_paginated_table(df, page_size=50, max_rows=None):
         if col not in df_display.columns:
             df_display[col] = ""
     df_display = df_display[DISPLAY_COLUMNS]
+
+    # Alias nama dokter dengan nama manusia Indonesia, gelar tetap sesuai asli
+    if "Dokter" in df_display.columns:
+        import random
+        import re
+        nama_alias = [
+            "Andi", "Budi", "Citra", "Dewi", "Eko", "Fajar", "Gita", "Hadi", "Indra", "Joko",
+            "Kartika", "Lina", "Maya", "Nanda", "Oka", "Putri", "Rian", "Sari", "Tono", "Wulan"
+        ]
+        dokter_list = sorted(df_display["Dokter"].unique())
+        random.seed(42)
+        alias_map = {}
+        for i, nama_asli in enumerate(dokter_list):
+            # Ekstrak gelar depan (misal: dr., drg.) dan gelar belakang (misal: Sp.A, Sp.PD)
+            match = re.match(r"^(drg?\.|dr\.|drh\.|dr\s|drg\s)?\s*([\w'\-]+)(.*)$", nama_asli.strip(), re.IGNORECASE)
+            if match:
+                gelar_depan = match.group(1) or "dr. "
+                sisa = match.group(3) or ""
+                gelar_belakang = ""
+                # Cari gelar belakang (Sp.A, Sp.PD, dll) di sisa
+                match_belakang = re.search(r"(Sp\.[\w\-]+|Sp\s*[A-Z]+|M\.\w+|drg\.|drh\.|dr\.|dr\s|drg\s)", sisa)
+                if match_belakang:
+                    gelar_belakang = match_belakang.group(1)
+                alias_nama = nama_alias[i % len(nama_alias)]
+                alias_map[nama_asli] = f"{gelar_depan.strip()} {alias_nama} {gelar_belakang.strip()}".replace("  ", " ").strip()
+            else:
+                # fallback: hanya ganti nama tengah/belakang
+                alias_map[nama_asli] = f"dr. {nama_alias[i % len(nama_alias)]}"
+        df_display["Dokter"] = df_display["Dokter"].map(alias_map)
+        st.info("Nama dokter telah disamarkan, namun gelar tetap sesuai aslinya demi privasi dan kejelasan profesi. Jika butuh data asli, hubungi admin.")
 
     total_rows = len(df_display)
     if total_rows == 0:
