@@ -37,3 +37,12 @@ Dashboard ini mendukung pengambilan keputusan rumah sakit dan pembelajaran mahas
 >
 > Anda juga diperbolehkan menggunakan cache data yang tersedia, namun perlu diketahui bahwa cache tersebut hanya bertahan beberapa hari dan akan diperbarui secara berkala.
 
+---
+
+> **Catatan untuk Penilaian/Tugas:**
+> Repositori ini diunggah ke GitHub hanya untuk keperluan penilaian/tugas akademik. Segala bentuk penggunaan, distribusi, atau modifikasi di luar tujuan tersebut harus seizin pemilik lisensi. Setelah proses penilaian selesai, repositori dapat dihapus atau diubah menjadi privat sesuai kebijakan pemilik.
+
+## Lisensi
+
+Lihat file `LISENSI.txt` untuk detail lisensi dan hak cipta proyek ini.
+
