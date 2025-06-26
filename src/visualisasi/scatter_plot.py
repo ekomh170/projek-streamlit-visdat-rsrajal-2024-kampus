@@ -56,7 +56,7 @@ def render_scatter_plot():
     df[usia_col + '_as_num'] = parsed_usia
     # 1. Visualisasi scatter plot
     plt.figure(figsize=(10, 5))
-    sns.stripplot(data=df, x=poli_col, y=usia_col + '_as_num', jitter=True, alpha=0.7, palette='Set2')
+    sns.stripplot(data=df, x=poli_col, y=usia_col + '_as_num', hue=poli_col, jitter=True, alpha=0.7, palette='Set2', legend=False)
     plt.title('Distribusi Usia Pasien pada Masing-masing Poli', fontsize=15, color="#228B22", fontweight="bold")
     plt.xlabel('Poliklinik')
     plt.ylabel('Usia Pasien')
