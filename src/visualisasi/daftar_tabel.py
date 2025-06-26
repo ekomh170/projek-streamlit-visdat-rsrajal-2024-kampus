@@ -142,22 +142,81 @@ def render_tabel_kunjungan():
     Fungsi utama buat nampilin tabel kunjungan di dashboard.
     """
     st.title("Tabel Data Mentah (dengan Pagination, max 6000 data)")
+    st.markdown("""
+    <div style='background:#fff3cd;border:2px solid #ffe082;padding:1.1rem 1.5rem 1.1rem 1.5rem;border-radius:12px;margin-bottom:1.2rem;box-shadow:0 2px 12px rgba(255,193,7,0.10);font-size:1.05rem;'>
+    <b>⚠️ Penting:</b> <br>
+    <ul style='margin-bottom:0;'>
+    <li>Refresh data dari Google Sheets <b>hanya jika data tidak bisa diambil dari cache/lokal</b> atau benar-benar perlu update terbaru.</li>
+    <li>Jangan sering-sering refresh, karena API Google Sheets gratisan <b>ada batasan kuota</b> dan bisa menyebabkan error jika terlalu sering.</li>
+    <li>Gunakan data offline/lokal jika memungkinkan untuk menghemat kuota API.</li>
+    </ul>
+    </div>
+    """, unsafe_allow_html=True)
     col1, col2 = st.columns(2)
-    refresh_clicked = col1.button("🔄 Refresh Data dari Google Sheets", help="Klik untuk ambil data terbaru dan reset cache")
+    refresh_clicked = col1.button("🔄 Refresh Data dari Google Sheets", help="Hanya gunakan jika data tidak bisa diambil dari cache/lokal atau benar-benar perlu update terbaru. Jangan sering-sering refresh karena API Google Sheets gratisan ada batasan kuota.")
     offline_clicked = col2.button("Gunakan Data Offline (Excel Lokal)", help="Ambil data dari file lokal dan update cache")
 
     if refresh_clicked:
-        st.cache_data.clear()
-        if os.path.exists(CACHE_PATH):
-            try:
-                os.remove(CACHE_PATH)
-                st.success("Cache lokal berhasil dihapus. Data akan diambil ulang.")
-            except Exception as e:
-                st.warning(f"Gagal hapus cache lokal: {e}")
+        # Konfirmasi jika data kosong/bermasalah, jika tidak bermasalah langsung refresh
+        df_before = get_cached_data()
+        if df_before is None or df_before.empty:
+            st.warning("Data sebelumnya kosong atau bermasalah. Pastikan koneksi dan kredensial Google Sheets sudah benar sebelum refresh.\n\n<b>Jangan sering-sering refresh, gunakan hanya jika data tidak bisa diambil dari cache/lokal.</b>", unsafe_allow_html=True)
+            if st.button("Tetap Lanjutkan Refresh Data?", key="force_refresh"):
+                st.cache_data.clear()
+                if os.path.exists(CACHE_PATH):
+                    try:
+                        os.remove(CACHE_PATH)
+                        st.success("Cache lokal berhasil dihapus. Data akan diambil ulang.")
+                    except Exception as e:
+                        st.warning(f"Gagal hapus cache lokal: {e}")
+                else:
+                    st.info("Cache lokal tidak ditemukan, akan ambil data baru.")
+                df = get_cached_data()
+            else:
+                st.stop()
         else:
-            st.info("Cache lokal tidak ditemukan, akan ambil data baru.")
-        df = get_cached_data()
-
+            # Ganti st.confirm dengan dialog konfirmasi manual
+            if 'confirm_refresh' not in st.session_state:
+                st.session_state['confirm_refresh'] = None
+            if st.session_state['confirm_refresh'] is None:
+                st.markdown("""
+                <div style='background:#fff3cd;border:2px solid #ffe082;padding:1.2rem 1.5rem 1.2rem 1.5rem;border-radius:12px;margin-bottom:1.2rem;box-shadow:0 2px 12px rgba(255,193,7,0.10);font-size:1.1rem;'>
+                <b>⚠️ Konfirmasi Refresh Data</b><br>
+                Anda akan melakukan <b>refresh data dari Google Sheets</b>.<br>
+                <span style='color:#b26a00;'>Tindakan ini akan menghapus cache lokal dan mengambil data terbaru dari Google Sheets.</span><br>
+                <b>Pastikan koneksi dan kredensial sudah benar.</b><br>
+                <span style='color:#b26a00;'><b>Jangan sering-sering refresh!</b> API Google Sheets gratisan <b>ada batasan kuota</b>. Gunakan refresh <b>hanya jika data tidak bisa diambil dari cache/lokal</b> atau benar-benar perlu update terbaru.</span><br>
+                Klik <b>Konfirmasi</b> untuk melanjutkan, atau <b>Batal</b> untuk membatalkan.
+                </div>
+                """, unsafe_allow_html=True)
+                col_confirm, col_cancel = st.columns([2,1])
+                with col_confirm:
+                    confirm = st.button("✅ Konfirmasi: Yakin ingin refresh data dari Google Sheets?", key="confirm_refresh_btn")
+                with col_cancel:
+                    cancel = st.button("❌ Batal", key="cancel_refresh_btn")
+                if confirm:
+                    st.session_state['confirm_refresh'] = True
+                    st.experimental_rerun()
+                elif cancel:
+                    st.session_state['confirm_refresh'] = False
+                    st.info("Refresh data dibatalkan.")
+                    st.stop()
+                st.stop()
+            elif st.session_state['confirm_refresh']:
+                st.cache_data.clear()
+                if os.path.exists(CACHE_PATH):
+                    try:
+                        os.remove(CACHE_PATH)
+                        st.success("Cache lokal berhasil dihapus. Data akan diambil ulang.")
+                    except Exception as e:
+                        st.warning(f"Gagal hapus cache lokal: {e}")
+                else:
+                    st.info("Cache lokal tidak ditemukan, akan ambil data baru.")
+                df = get_cached_data()
+            else:
+                st.info("Refresh data dibatalkan.")
+                st.session_state['confirm_refresh'] = None
+                st.stop()
     elif offline_clicked:
         import pandas as pd
         try:
