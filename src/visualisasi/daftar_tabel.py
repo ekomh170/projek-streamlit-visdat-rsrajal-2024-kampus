@@ -15,7 +15,13 @@ DISPLAY_COLUMNS = [
 # Link Google Spreadsheet dan nama sheet yang dipakai
 SHEET_URL = st.secrets["SHEET_URL"] if "SHEET_URL" in st.secrets else "https://docs.google.com/spreadsheets/d/1Uqg-6Zp64VCv9_1b4soV9KSkRL0WkMjbcxmXWnVxpYA/edit?usp=sharing"
 WORKSHEET_NAME = st.secrets["WORKSHEET_NAME"] if "WORKSHEET_NAME" in st.secrets else "Januari"
+
 # Lokasi file cache lokal biar loading data lebih ngebut
+# NOTE: File cache ini TIDAK di-commit ke repository GitHub karena:
+# 1. Bisa dihasilkan ulang dari sumber data (Google Sheets/Excel)
+# 2. Menjaga repo tetap bersih dan ringan
+# 3. Menghindari konflik saat kolaborasi tim
+# 4. Cache akan dibuat otomatis saat aplikasi dijalankan pertama kali
 CACHE_PATH = "data/processed/cache_tabel_kunjungan.pkl"
 
 def load_data():
@@ -77,6 +83,10 @@ def load_data():
             return None
 
 # Fungsi ini biar data nggak ngulang loading terus, jadi lebih cepat karena disimpan di cache lokal
+# BEST PRACTICE: Cache dibuat otomatis dan TIDAK di-commit ke repo karena:
+# - Menjaga repo tetap bersih dan ringan
+# - Menghindari data sensitif ter-commit ke GitHub
+# - Cache akan dihasilkan ulang secara otomatis saat dibutuhkan
 @st.cache_data(show_spinner=True)
 def get_cached_data():
     # Cek cache Streamlit dulu, baru file lokal
@@ -186,7 +196,31 @@ def render_tabel_kunjungan():
     refresh_clicked = col1.button("🔄 Refresh Data dari Google Sheets", help="Hanya gunakan jika data tidak bisa diambil dari cache/lokal atau benar-benar perlu update terbaru. Jangan sering-sering refresh karena API Google Sheets gratisan ada batasan kuota.")
     offline_clicked = col2.button("Gunakan Data Offline (Excel Lokal)", help="Ambil data dari file lokal dan update cache")
 
-    if refresh_clicked:
+    # Inisialisasi df untuk semua kondisi
+    df = None
+    
+    # --- FIX: Always check confirm_refresh state on rerun ---
+    if st.session_state.get('confirm_refresh'):
+        st.session_state['confirm_refresh'] = None
+        st.cache_data.clear()
+        if os.path.exists(CACHE_PATH):
+            try:
+                os.remove(CACHE_PATH)
+                st.success("✅ Cache lokal berhasil dihapus. Data akan diambil ulang dari Google Sheets.")
+            except Exception as e:
+                st.warning(f"Gagal hapus cache lokal: {e}")
+        else:
+            st.info("Cache lokal tidak ditemukan, akan ambil data baru dari Google Sheets.")
+        
+        # Tampilkan spinner loading saat mengambil data baru
+        with st.spinner("🔄 Sedang mengambil data terbaru dari Google Sheets..."):
+            df = get_cached_data()
+        
+        if df is not None and not df.empty:
+            st.success("✅ Data berhasil di-refresh dari Google Sheets!")
+        else:
+            st.error("❌ Gagal mengambil data dari Google Sheets.")
+    elif refresh_clicked:
         # Konfirmasi jika data kosong/bermasalah, jika tidak bermasalah langsung refresh
         df_before = get_cached_data()
         if df_before is None or df_before.empty:
@@ -226,23 +260,12 @@ def render_tabel_kunjungan():
                     cancel = st.button("❌ Batal", key="cancel_refresh_btn")
                 if confirm:
                     st.session_state['confirm_refresh'] = True
-                    st.experimental_rerun()
+                    st.rerun()
                 elif cancel:
                     st.session_state['confirm_refresh'] = False
                     st.info("Refresh data dibatalkan.")
                     st.stop()
                 st.stop()
-            elif st.session_state['confirm_refresh']:
-                st.cache_data.clear()
-                if os.path.exists(CACHE_PATH):
-                    try:
-                        os.remove(CACHE_PATH)
-                        st.success("Cache lokal berhasil dihapus. Data akan diambil ulang.")
-                    except Exception as e:
-                        st.warning(f"Gagal hapus cache lokal: {e}")
-                else:
-                    st.info("Cache lokal tidak ditemukan, akan ambil data baru.")
-                df = get_cached_data()
             else:
                 st.info("Refresh data dibatalkan.")
                 st.session_state['confirm_refresh'] = None
@@ -294,7 +317,6 @@ def render_tabel_kunjungan():
         except Exception as e:
             st.error(f"Gagal mengambil data offline: {e}")
             df = None
-
     else:
         df = get_cached_data()
 

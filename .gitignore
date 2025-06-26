@@ -24,6 +24,10 @@ data/original/*
 !data/original/.gitkeep
 !data/processed/*
 
+# Ignore cache files (auto-generated, tidak perlu di-commit)
+# data/processed/cache_*.pkl
+# *.pkl
+
 # Ignore Excel and other data exports
 *.xlsx
 *.csv
