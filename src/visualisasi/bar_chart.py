@@ -9,6 +9,7 @@ def get_barchart_data():
     Ambil dan normalisasi data untuk bar chart, pastikan kolom 'Poli', 'Dokter', dan 'Umur / Tahun' konsisten.
     Kembalikan DataFrame dengan kolom: 'Poli', 'Dokter', 'Umur / Tahun'.
     Kolom 'Umur / Tahun' diubah ke integer, jika gagal parsing diisi NaN.
+    Nama dokter otomatis diganti alias nama manusia demi privasi.
     """
     df = get_cached_data()
     if df is None or df.empty:
@@ -43,6 +44,32 @@ def get_barchart_data():
             return None
     df['Umur / Tahun'] = df['Umur / Tahun'].apply(parse_umur)
     df = df.dropna(subset=['Umur / Tahun'])
+    # Alias nama dokter dengan nama manusia Indonesia, gelar tetap sesuai asli
+    if 'Dokter' in df.columns:
+        import random
+        import re
+        nama_alias = [
+            "Andi", "Budi", "Citra", "Dewi", "Eko", "Fajar", "Gita", "Hadi", "Indra", "Joko",
+            "Kartika", "Lina", "Maya", "Nanda", "Oka", "Putri", "Rian", "Sari", "Tono", "Wulan"
+        ]
+        dokter_list = sorted(df['Dokter'].unique())
+        random.seed(42)
+        alias_map = {}
+        for i, nama_asli in enumerate(dokter_list):
+            # Ekstrak gelar depan (misal: dr., drg.) dan gelar belakang (misal: Sp.A, Sp.PD)
+            match = re.match(r"^(drg?\.|dr\.|drh\.|dr\s|drg\s)?\s*([\w'\-]+)(.*)$", str(nama_asli).strip(), re.IGNORECASE)
+            if match:
+                gelar_depan = match.group(1) or "dr. "
+                sisa = match.group(3) or ""
+                gelar_belakang = ""
+                match_belakang = re.search(r"(Sp\.[\w\-]+|Sp\s*[A-Z]+|M\.\w+|drg\.|drh\.|dr\.|dr\s|drg\s)", sisa)
+                if match_belakang:
+                    gelar_belakang = match_belakang.group(1)
+                alias_nama = nama_alias[i % len(nama_alias)]
+                alias_map[nama_asli] = f"{gelar_depan.strip()} {alias_nama} {gelar_belakang.strip()}".replace("  ", " ").strip()
+            else:
+                alias_map[nama_asli] = f"dr. {nama_alias[i % len(nama_alias)]}"
+        df['Dokter'] = df['Dokter'].map(alias_map)
     return df
 
 def render_bar_chart(df=None):
