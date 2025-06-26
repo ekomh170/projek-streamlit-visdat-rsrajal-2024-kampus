@@ -24,3 +24,12 @@ Aplikasi ini adalah dashboard interaktif untuk memvisualisasikan data kunjungan 
 
 ## Tujuan Proyek
 Dashboard ini mendukung pengambilan keputusan rumah sakit dan pembelajaran mahasiswa, serta menjadi pondasi awal sistem analisis data rumah sakit yang lebih komprehensif.
+
+---
+
+## Catatan Keamanan Akses
+> **Penting:** Demi keamanan data dan privasi, API key/kredensial Google Service Account yang digunakan untuk mengakses Google Sheets **tidak dapat disebarluaskan** dan **tidak dapat diberikan aksesnya kepada pihak luar**. Mohon maaf, kami tidak dapat membagikan file kredensial tersebut. Jika ingin menjalankan aplikasi ini secara penuh, silakan gunakan kredensial Google Service Account milik Anda sendiri dan atur pada file `secrets.toml` atau sesuai instruksi setup.
+>
+> Jika Anda ingin mencoba aplikasi dengan data contoh, silakan gunakan link Google Spreadsheet public yang sudah kami sediakan di aplikasi. Untuk kebutuhan data lebih lanjut, silakan diskusikan dengan tim pengembang.
+>
+> Anda juga diperbolehkan menggunakan cache data yang tersedia, namun perlu diketahui bahwa cache tersebut hanya bertahan beberapa hari dan akan diperbarui secara berkala.
