@@ -26,7 +26,38 @@ def render_pembersihan_data():
                     Service account sudah terautentikasi dan siap mengambil data dari Google Sheets.<br>
                 </div>
                 """, unsafe_allow_html=True)
+                # Tampilkan detail sistem jika terhubung
+                import platform, sys
+                st.markdown("""
+                <div style='background:#f1f8e9;padding:0.7rem 1.2rem 0.7rem 1.2rem;border-radius:10px;margin-bottom:1rem;border:1px solid #c5e1a5;'>
+                <b>🖥️ Info Sistem:</b><br>
+                <ul style='margin-bottom:0;'>
+                <li><b>OS:</b> {os}</li>
+                <li><b>Python:</b> {py}</li>
+                <li><b>Platform:</b> {plat}</li>
+                </ul>
+                </div>
+                """.format(
+                    os=platform.system() + " " + platform.release(),
+                    py=sys.version.split()[0],
+                    plat=platform.platform(),
+                ), unsafe_allow_html=True)
             else:
                 st.error(pesan)
+                # Tampilkan troubleshooting singkat jika gagal
+                st.markdown("""
+                <div style='background:#fff3cd;padding:0.7rem 1.2rem 0.7rem 1.2rem;border-radius:10px;margin-bottom:1rem;border:1px solid #ffe082;'>
+                <b>⚠️ Troubleshooting:</b><br>
+                <ul style='margin-bottom:0;'>
+                <li>Pastikan service account sudah di-share ke Google Sheet.</li>
+                <li>Periksa secrets sudah benar dan koneksi internet stabil.</li>
+                <li>Jika error tetap, hubungi developer.</li>
+                </ul>
+                </div>
+                """, unsafe_allow_html=True)
         except Exception as e:
             st.error(f"Terjadi error saat cek koneksi: {e}")
+
+    # Catatan developer singkat (tidak tampilkan info sensitif)
+    with st.expander("Catatan Developer (Debugging)"):
+        st.info("Jika terjadi kendala koneksi, cek secrets dan pastikan service account sudah di-share ke Google Sheet. Untuk maintenance lebih lanjut, hubungi developer utama.")
