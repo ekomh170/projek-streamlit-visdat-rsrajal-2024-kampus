@@ -1,5 +1,8 @@
 # Dashboard Visualisasi Data Kunjungan Rawat Jalan RS Juliana
 
+>
+> **Catatan:** Sebagian data (seperti nama dokter, pasien, dan informasi sensitif lain) telah disamarkan/di-alias secara otomatis di aplikasi ini untuk menjaga keamanan dan privasi data pemilik. Jika membutuhkan akses data asli untuk keperluan resmi, silakan hubungi tim pengembang.
+
 ## Deskripsi Singkat
 Dashboard ini menampilkan visualisasi interaktif data kunjungan rawat jalan dokter spesialis di RS Juliana untuk bulan Januari 2025. Data terhubung otomatis ke Google Spreadsheet, diproses dan divisualisasikan secara periodik (bukan real-time) untuk mendukung pengambilan keputusan manajemen rumah sakit dan pembelajaran mahasiswa.
 
@@ -33,3 +36,4 @@ Dashboard ini mendukung pengambilan keputusan rumah sakit dan pembelajaran mahas
 > Jika Anda ingin mencoba aplikasi dengan data contoh, silakan gunakan link Google Spreadsheet public yang sudah kami sediakan di aplikasi. Untuk kebutuhan data lebih lanjut, silakan diskusikan dengan tim pengembang.
 >
 > Anda juga diperbolehkan menggunakan cache data yang tersedia, namun perlu diketahui bahwa cache tersebut hanya bertahan beberapa hari dan akan diperbarui secara berkala.
+
